@@ -210,6 +210,10 @@
       <div style="font-size:0.72rem;color:#2980b9;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;">📅 Июль 2026 — в процессе</div>
       <div style="font-size:1.4rem;font-weight:800;color:#1a5276;margin-top:4px;" id="july-total">—</div>
     </div>
+    <div style="background:#fdf3e7;border:1.5px solid #e67e22;border-radius:12px;padding:12px 20px;flex:1;min-width:200px;">
+      <div style="font-size:0.72rem;color:#e67e22;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;">📅 Август 2026 — в процессе</div>
+      <div style="font-size:1.4rem;font-weight:800;color:#7d4a0f;margin-top:4px;" id="aug-total">—</div>
+    </div>
   </div>
 
   <div class="sec-title">Сессии — нажмите на строку, чтобы открыть список участников</div>
@@ -799,7 +803,7 @@ function render() {
   const tbody = document.getElementById('tbody');
   tbody.innerHTML = '';
 
-  let totalPax = 0, totalIncome = 0, julyIncome = 0;
+  let totalPax = 0, totalIncome = 0, julyIncome = 0, augIncome = 0;
 
   sessions.forEach(s => {
     const n      = s.participants.length;
@@ -808,6 +812,7 @@ function render() {
     totalPax    += n;
     totalIncome += income;
     if (s.date.startsWith('2026-07')) julyIncome += income;
+    if (s.date.startsWith('2026-08')) augIncome  += income;
 
     const isOpen = openId === s.id;
 
@@ -863,6 +868,8 @@ function render() {
   document.getElementById('grand-total').textContent = g;
   document.getElementById('grand-total-header').textContent = g;
   document.getElementById('july-total').textContent = fmt(julyIncome);
+  const augEl = document.getElementById('aug-total');
+  if (augEl) augEl.textContent = fmt(augIncome);
 }
 
 function buildPanel(s) {
@@ -1029,6 +1036,8 @@ function renderTotals() {
   document.getElementById('grand-total-header').textContent = g;
   const julyEl = document.getElementById('july-total');
   if (julyEl) julyEl.textContent = fmt(sessions.filter(s=>s.date.startsWith('2026-07')).reduce((a,s)=>a+sessionIncome(s),0));
+  const augEl2 = document.getElementById('aug-total');
+  if (augEl2) augEl2.textContent = fmt(sessions.filter(s=>s.date.startsWith('2026-08')).reduce((a,s)=>a+sessionIncome(s),0));
 }
 
 function delParticipant(e, sid, idx) {
